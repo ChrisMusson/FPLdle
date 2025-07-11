@@ -35,7 +35,7 @@ async function loadGame() {
             if (!teamRanks[row.season]) {
                 teamRanks[row.season] = {};
             }
-            teamRanks[row.season][row.Team] = row.rank;
+            teamRanks[row.season][normalizeForComparison(row.Team)] = row.rank;
         }
     });
 
@@ -125,8 +125,8 @@ function getFeedback(correct, guess) {
     result['pos'] = guess['pos'] === correct['pos'] ? "correct" : "wrong";
 
     // Team Rank comparison
-    const correctTeamRank = teamRanks[correct.season] ? teamRanks[correct.season][correct.team] : null;
-    const guessTeamRank = teamRanks[guess.season] ? teamRanks[guess.season][guess.team] : null;
+    const correctTeamRank = teamRanks[correct.season] ? teamRanks[correct.season][normalizeForComparison(correct.team)] : null;
+    const guessTeamRank = teamRanks[guess.season] ? teamRanks[guess.season][normalizeForComparison(guess.team)] : null;
 
     if (correctTeamRank !== null && guessTeamRank !== null) {
         if (guessTeamRank === correctTeamRank) {

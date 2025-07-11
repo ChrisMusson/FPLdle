@@ -27,6 +27,7 @@ def convert_team_names(league_tables_path, output_path):
             "Wolverhampton Wanderers": "Wolves",
             "Sheffield United": "Sheffield Utd",
             "Nottingham Forest": "Nott'm Forest",
+            "Newcastle United": "Newcastle",
         }
 
         # Apply the standardization mapping to the 'Team' column
@@ -45,5 +46,5 @@ def convert_team_names(league_tables_path, output_path):
 
 if __name__ == "__main__":
     league_tables_csv = parent_dir = Path(__file__).resolve().parent.parent / "league_tables.csv"
-    output_csv = parent_dir = Path(__file__).resolve().parent.parent / "league_tables.csv"
+    output_csv = parent_dir = Path(__file__).resolve().parent.parent / "league_tables_converted.csv"
     convert_team_names(league_tables_csv, output_csv)
