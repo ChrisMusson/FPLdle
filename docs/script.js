@@ -5,7 +5,7 @@ let answer;
 let attempts = 0;
 const maxAttempts = 6;
 const guessedPlayers = new Set();
-const minimumPoints = 100;
+const minimumPoints = 50;
 let currentFocus;
 
 async function loadGame() {
