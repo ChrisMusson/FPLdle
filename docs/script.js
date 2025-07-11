@@ -15,7 +15,8 @@ async function loadGame() {
     console.log("Raw parsed players data:", parsedPlayers.data);
     players = parsedPlayers.data.filter(p => p.name).map(p => ({
         ...p,
-        normalizedName: normalizeForComparison(p.name)
+        normalizedName: normalizeForComparison(p.name),
+        age: p.dob ? Math.floor((Date.now() - new Date(p.dob).getTime()) / (1000 * 60 * 60 * 24 * 365.25)) : null // Calculate age from dob
     })); // Filter out players with no name and add normalized name
 
     if (players.length === 0) {
