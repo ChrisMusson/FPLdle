@@ -70,7 +70,7 @@ function setupUI() {
     const table = document.createElement("table");
     table.id = "guessesTable";
     const header = document.createElement("tr");
-    const headers = ["Name", "Position", "Team", "Age", "Points", "Minutes", "Goals", "Assists", "Yellow Cards", "Red Cards", "Own Goals"];
+    const headers = ["Name", "Position", "Team", "Age", "Points", "Minutes", "Goals", "Assists", "Yellow Cards", "Red Cards"];
     headers.forEach(h => {
         const th = document.createElement("th");
         th.textContent = h;
@@ -139,7 +139,7 @@ function getFeedback(correct, guess) {
         result['teamRank'] = "wrong"; // Or some other indicator for missing data
     }
 
-    const numericalFields = ['age', 'points', 'minutes', 'goals', 'assists', 'yellow_cards', 'red_cards', 'own_goals'];
+    const numericalFields = ['age', 'points', 'minutes', 'goals', 'assists', 'yellow_cards', 'red_cards'];
     numericalFields.forEach(k => {
         if (guess[k] === correct[k]) result[k] = "correct";
         else if (guess[k] < correct[k]) result[k] = "higher";
@@ -183,7 +183,6 @@ function makeGuess(inputValue) {
         [guess.assists, fb.assists],
         [guess.yellow_cards, fb.yellow_cards],
         [guess.red_cards, fb.red_cards],
-        [guess.own_goals, fb.own_goals],
     ];
     cells.forEach(([text, cls]) => {
         const td = document.createElement("td");
@@ -221,7 +220,6 @@ function endGame(message) {
         assists: "correct",
         yellow_cards: "correct",
         red_cards: "correct",
-        own_goals: "correct",
     };
 
     const cells = [
@@ -235,7 +233,6 @@ function endGame(message) {
         [answer.assists, fb.assists],
         [answer.yellow_cards, fb.yellow_cards],
         [answer.red_cards, fb.red_cards],
-        [answer.own_goals, fb.own_goals],
     ];
 
     cells.forEach(([text, cls]) => {
