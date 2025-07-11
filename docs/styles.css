@@ -1,0 +1,213 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #121212;
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    line-height: 1.6;
+    text-align: center; /* Center inline content like the season text */
+}
+
+h1 {
+    margin-bottom: 1rem;
+    color: #4CAF50;
+}
+
+#feedback {
+    margin-top: 1rem;
+    width: 100%; /* Still take full width of parent (body) */
+    max-width: 1200px; /* Limit its maximum width */
+    display: flex; /* Make it a flex container */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center children horizontally */
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 1rem auto; /* Center the input container */
+}
+
+.guess-input {
+    padding: 0.75rem;
+    font-size: 1rem;
+    width: 300px;
+    background: #2c2c2c;
+    border: 1px solid #555;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.autocomplete-items {
+    position: absolute;
+    border: 1px solid #555;
+    border-top: none;
+    z-index: 99;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #2c2c2c;
+}
+
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #444;
+}
+
+.autocomplete-items div:hover {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.autocomplete-active {
+    background-color: #4CAF50 !important;
+    color: #fff;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    margin: 0 10px;
+}
+
+#giveUpBtn {
+    background-color: #dc3545;
+    color: white;
+}
+
+#playAgainBtn {
+    background-color: #007bff;
+    color: white;
+    display: none; /* Initially hidden */
+}
+
+table {
+    border-collapse: collapse;
+    /* width: 100%; */ /* Removed to allow content-based sizing */
+    margin-top: 1rem; /* Keep top margin */
+    /* margin: 1rem auto; */ /* Removed, centering handled by flex parent */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+th,
+td {
+    border: 1px solid #444;
+    padding: 12px;
+    text-align: center;
+    white-space: nowrap; /* Ensure all content stays on one line */
+}
+
+th:nth-child(1),
+td:nth-child(1) { /* Name column */
+    min-width: 200px;
+}
+
+th:nth-child(2),
+td:nth-child(2) { /* Position column */
+    min-width: 80px;
+}
+
+th:nth-child(3),
+td:nth-child(3) { /* Team column */
+    min-width: 120px;
+}
+
+th:nth-child(4),
+td:nth-child(4) { /* Age column */
+    min-width: 60px;
+}
+
+th:nth-child(5),
+td:nth-child(5) { /* Points column */
+    min-width: 70px;
+}
+
+th:nth-child(6),
+td:nth-child(6) { /* Minutes column */
+    min-width: 80px;
+}
+
+th:nth-child(7),
+td:nth-child(7) { /* Goals column */
+    min-width: 60px;
+}
+
+th:nth-child(8),
+td:nth-child(8) { /* Assists column */
+    min-width: 60px;
+}
+
+th:nth-child(9),
+td:nth-child(9) { /* Yellow Cards column */
+    min-width: 60px;
+}
+
+th:nth-child(10),
+td:nth-child(10) { /* Red Cards column */
+    min-width: 60px;
+}
+
+th:nth-child(11),
+td:nth-child(11) { /* Own Goals column */
+    min-width: 60px;
+}
+
+th {
+    background-color: #333;
+    color: #4CAF50;
+}
+
+.correct {
+    background-color: #28a745; /* Green */
+    color: white;
+}
+
+.higher {
+    background-color: #ffc107; /* Amber */
+    color: black;
+}
+
+.lower {
+    background-color: #17a2b8; /* Info Blue */
+    color: white;
+}
+
+.wrong {
+    background-color: #dc3545; /* Red */
+    color: white;
+}
+
+/* Adding arrows for higher/lower feedback */
+.higher::after {
+    content: ' ▲';
+}
+
+.lower::after {
+    content: ' ▼';
+}
+
+/* Animation for correct answer */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.correct-animation {
+    animation: pulse 0.5s ease-in-out;
+    font-weight: bold;
+    color: #4CAF50; /* Green color for emphasis */
+}
