@@ -39,18 +39,79 @@ async function loadGame() {
         }
     });
 
+    populateSeasonCheckboxes();
     resetGame();
 }
+
+
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+function populateSeasonCheckboxes() {
+    const seasonCheckboxes = document.getElementById('season-checkboxes');
+    const seasons = [...new Set(players.map(p => p.season))];
+    seasons.sort().reverse();
+    seasonCheckboxes.innerHTML = '';
+    const savedSeasons = getCookie("selectedSeasons");
+    const selectedSeasons = savedSeasons ? JSON.parse(savedSeasons) : seasons;
+
+    seasons.forEach(season => {
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = season;
+        checkbox.name = season;
+        checkbox.value = season;
+        checkbox.checked = selectedSeasons.includes(season);
+
+        const label = document.createElement('label');
+        label.htmlFor = season;
+        label.appendChild(document.createTextNode(season));
+
+        seasonCheckboxes.appendChild(checkbox);
+        seasonCheckboxes.appendChild(label);
+
+        checkbox.addEventListener('change', (e) => {
+            const currentlySelectedSeasons = Array.from(document.querySelectorAll('#season-checkboxes input:checked')).map(cb => cb.value);
+            setCookie("selectedSeasons", JSON.stringify(currentlySelectedSeasons), 365);
+            e.target.nextElementSibling.classList.toggle('selected', e.target.checked);
+        });
+    });
+
+    document.getElementById('newPlayerBtn').addEventListener('click', resetGame);
+}
+
 
 function resetGame() {
     attempts = 0;
     guessedPlayers.clear();
     document.getElementById('feedback').innerHTML = '';
 
-    const eligiblePlayers = players.filter(p => p.points >= minimumPoints);
+    const seasonCheckboxes = document.getElementById('season-checkboxes').querySelectorAll('input[type="checkbox"]:checked');
+    const selectedSeasons = Array.from(seasonCheckboxes).map(cb => cb.value);
+
+    const eligiblePlayers = players.filter(p => selectedSeasons.includes(p.season) && p.points >= minimumPoints);
     if (eligiblePlayers.length === 0) {
-        console.error("No eligible players found with at least " + minimumPoints + " points. Please check master.csv data.");
-        alert("Error: No eligible players found to start the game. Adjust minimum points or check data.");
+        console.error("No eligible players found for the selected seasons with at least " + minimumPoints + " points.");
+        alert("Error: No eligible players found for the selected seasons. Please select at least one season or check the data.");
+        document.getElementById('guessInput').disabled = true;
         return;
     }
     answer = eligiblePlayers[Math.floor(Math.random() * eligiblePlayers.length)];
@@ -346,7 +407,7 @@ function autocomplete(inp, arr) {
     });
 }
 
-document.getElementById('playAgainBtn').addEventListener('click', loadGame);
+document.getElementById('playAgainBtn').addEventListener('click', resetGame);
 document.getElementById('giveUpBtn').addEventListener('click', () => {
     endGame(`The correct player was <strong>${answer.name}</strong>.`);
 });

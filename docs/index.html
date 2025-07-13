@@ -9,7 +9,15 @@
     </head>
 
 <body>
-    <h1>FPLdle</h1>
+    <div class="settings-bar">
+        <div class="settings-container">
+            <label>Active Seasons:</label>
+            <div id="season-checkboxes"></div>
+            <button id="newPlayerBtn" class="btn">Pick New Player</button>
+        </div>
+    </div>
+    <div class="main-content">
+        <h1>FPLdle</h1>
     <div>Season: <span id="season"></span></div>
     <div class="input-container">
         <button id="giveUpBtn" class="btn">Give Up</button>
@@ -18,6 +26,7 @@
     </div>
     <div id="feedback"></div>
     <script src="script.js"></script>
+    </div>
 </body>
 
 </html>
