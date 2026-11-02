@@ -2,31 +2,71 @@
 <html lang="en">
 
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="hsl(224 71.4% 4.1%)">
     <title>FPLdle</title>
+    <link rel="icon" href="./assets/logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
-    </head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+</head>
 
 <body>
-    <div class="settings-bar">
+    <header class="settings-bar">
         <div class="settings-container">
-            <label>Active Seasons:</label>
+            <span class="label seasons-label">Seasons</span>
             <div id="season-checkboxes"></div>
-            <button id="newPlayerBtn" class="btn">Pick New Player</button>
+            <div class="settings-actions">
+                <button id="toggleAllBtn" class="btn btn-neutral btn-xs">All</button>
+                <button id="newPlayerBtn" class="btn btn-outline btn-sm">New player</button>
+            </div>
         </div>
-    </div>
-    <div class="main-content">
-        <h1>FPLdle</h1>
-    <div>Season: <span id="season"></span></div>
-    <div class="input-container">
-        <button id="giveUpBtn" class="btn">Give Up</button>
-        <input id="guessInput" class="guess-input" placeholder="Guess player name" autocomplete="off" />
-        <button id="playAgainBtn" class="btn">Play Again</button>
-    </div>
-    <div id="feedback"></div>
+    </header>
+
+    <main class="main-content">
+        <div class="brand">
+            <img class="logo" src="./assets/logo.svg" alt="Solio">
+            <h1 class="title">FPLdle</h1>
+        </div>
+        <p class="subtitle">Guess the FPL player in 6 tries.</p>
+
+        <section class="panel game-card">
+            <div class="game-meta">
+                <div>
+                    <span class="label">Season</span>
+                    <strong id="season" class="season-value"></strong>
+                    <span id="seasonStatus" class="season-status"></span>
+                </div>
+                <span class="label" id="attempts"></span>
+            </div>
+            <div class="attempts-bar" id="attemptsBar" aria-hidden="true"></div>
+            <div class="input-container">
+                <div class="input-wrap">
+                    <input id="guessInput" class="input" placeholder="Search players" autocomplete="off" spellcheck="false" />
+                    <kbd class="kbd">/</kbd>
+                </div>
+                <button id="giveUpBtn" class="btn btn-neutral btn-lg">Give up</button>
+                <button id="playAgainBtn" class="btn btn-solid btn-lg" hidden>Play again</button>
+            </div>
+            <div id="result" class="result" hidden></div>
+        </section>
+
+        <div id="feedback"></div>
+
+        <div class="legend">
+            <span><i class="swatch tile correct"></i>Match</span>
+            <span><i class="swatch tile higher"><svg class="icon arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg></i>Answer is higher</span>
+            <span><i class="swatch tile lower"><svg class="icon arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></i>Answer is lower</span>
+            <span><i class="swatch tile wrong"></i>No match</span>
+            <span class="legend-note">Team compares league position: up means the answer's team finished higher.</span>
+        </div>
+    </main>
+
+    <div id="toast" class="toast" role="status"></div>
     <script src="script.js"></script>
-    </div>
 </body>
 
 </html>

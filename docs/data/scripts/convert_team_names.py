@@ -14,7 +14,7 @@ def convert_team_names(league_tables_path, output_path):
     """
     try:
         # Load league_tables.csv
-        df = pd.read_csv(league_tables_path)
+        df = pd.read_csv(league_tables_path, dtype={"DC": "Int64", "ODC": "Int64"})
 
         # Create a reverse mapping from team_map_data values to a standardized form
         # This assumes team_map_data values are the desired canonical names

@@ -1,257 +1,818 @@
+/*
+ * Styling follows fpl-planner: colours are its dark theme tokens (src/styles/theme.css), picked by meaning,
+ * never inlined or tinted with opacity. Components copy its button, input, table and popup classes.
+ */
+
+:root {
+    --background: hsl(224 71.4% 4.1%);
+    --foreground: hsl(210 20% 98%);
+    --card: hsl(219 40% 8%);
+    --popover: hsl(222 35% 6.9%);
+    --primary: hsl(14 100% 62%);
+    --primary-foreground: hsl(220.9 39.3% 11%);
+    --primary-soft: hsl(14 45% 13%);
+    --primary-border: hsl(14 55% 32%);
+    --secondary: hsl(215 27.9% 16.9%);
+    --secondary-foreground: hsl(210 20% 98%);
+    --muted: hsl(215 27.9% 13%);
+    --muted-foreground: hsl(217.9 10.6% 64.9%);
+    --faint-foreground: hsl(215 12% 42%);
+    --success: hsl(166 60% 26%);
+    --success-foreground: hsl(210 20% 98%);
+    --success-text: hsl(166 57% 45%);
+    --success-soft: hsl(168 45% 12%);
+    --destructive: hsl(0 72% 51%);
+    --destructive-text: hsl(0 90% 70%);
+    --destructive-soft: hsl(0 45% 15%);
+    --border: hsl(215 29% 11.6%);
+    --input: hsl(215 27.9% 16.9%);
+    --elevation-popup:
+        inset 0 0 0 1px rgb(255 255 255 / 0.08), 0 0 0 1px rgb(0 0 0 / 0.9),
+        0 2px 4px rgb(0 0 0 / 0.4), 0 12px 32px -4px rgb(0 0 0 / 0.7);
+    --elevation-tooltip:
+        inset 0 0 0 1px rgb(255 255 255 / 0.08), 0 0 0 1px rgb(0 0 0 / 0.9),
+        0 1px 2px rgb(0 0 0 / 0.4), 0 4px 8px -2px rgb(0 0 0 / 0.5);
+
+    /* Tailwind's rounded-xs, which every planner control uses */
+    --radius-xs: 2px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+:focus-visible {
+    outline: 1px solid var(--primary);
+    outline-offset: 2px;
+}
+
+[hidden] {
+    display: none !important;
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: #1a242f; /* Dark blue background */
-    color: #ffffff; /* All text white */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem;
-    line-height: 1.6;
-    text-align: center;
+    margin: 0;
+    font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+    font-size: 14px;
+    background: var(--background);
+    color: var(--foreground);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
 }
 
-h1 {
-    margin-bottom: 1rem;
-    color: #ffffff; /* White for heading */
+.label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    font-variant-numeric: tabular-nums;
 }
 
-#feedback {
-    margin-top: 1rem;
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
-.input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 1rem auto;
-}
-
-.guess-input {
-    padding: 0.75rem;
-    font-size: 1rem;
-    width: 300px;
-    background: #2c3e50; /* Darker muted blue for input */
-    border: 1px solid #4a627a; /* Muted border */
-    color: #ffffff; /* White text */
-    border-radius: 5px;
-}
-
-.autocomplete-items {
-    position: absolute;
-    border: 1px solid #4a627a;
-    border-top: none;
-    z-index: 99;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: #2c3e50; /* Darker muted blue for autocomplete */
-}
-
-.autocomplete-items div {
-    padding: 10px;
-    cursor: pointer;
-    border-bottom: 1px solid #34495e;
-}
-
-.autocomplete-items div:hover {
-    background-color: #27ae60; /* Muted green for hover */
-    color: #ffffff; /* White text on hover for contrast */
-}
-
-.autocomplete-active {
-    background-color: #27ae60 !important; /* Muted green for active */
-    color: #ffffff; /* White text on active for contrast */
-}
+/* Buttons: button.tsx */
 
 .btn {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    margin: 0 10px;
-    color: #ffffff; /* White text for buttons */
-}
-
-#giveUpBtn {
-    background-color: #a93226; /* Darker muted red */
-}
-
-#playAgainBtn {
-    background-color: #21618c; /* Darker muted blue */
-    display: none;
-}
-
-#newPlayerBtn {
-    background-color: #1a242f;
-}
-
-table {
-    border-collapse: collapse;
-    margin-top: 1rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-th,
-td {
-    border: 1px solid #34495e; /* Darker muted border */
-    padding: 12px;
-    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2.25rem;
+    padding: 0 0.75rem;
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
     white-space: nowrap;
-    color: #ffffff; /* White text for table cells */
+    border-radius: var(--radius-xs);
+    border: 1px solid transparent;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 150ms;
 }
 
-th:nth-child(1),
-td:nth-child(1) {
-    min-width: 200px;
+.btn:active {
+    transform: scale(0.98);
 }
 
-th:nth-child(2),
-td:nth-child(2) {
-    min-width: 80px;
+.btn:disabled {
+    pointer-events: none;
+    opacity: 0.4;
 }
 
-th:nth-child(3),
-td:nth-child(3) {
-    min-width: 120px;
+.btn-lg {
+    height: 2.5rem;
+    padding: 0 1rem;
 }
 
-th:nth-child(4),
-td:nth-child(4) {
-    min-width: 60px;
+.btn-sm {
+    height: 2rem;
 }
 
-th:nth-child(5),
-td:nth-child(5) {
-    min-width: 70px;
+.btn-xs {
+    height: 1.75rem;
+    padding: 0 0.5rem;
 }
 
-th:nth-child(6),
-td:nth-child(6) {
-    min-width: 80px;
+.btn-solid {
+    background: var(--primary);
+    color: var(--primary-foreground);
 }
 
-th:nth-child(7),
-td:nth-child(7) {
-    min-width: 60px;
+.btn-solid:hover {
+    background: color-mix(in srgb, var(--primary) 92%, black);
 }
 
-th:nth-child(8),
-td:nth-child(8) {
-    min-width: 60px;
+.btn-outline {
+    border-color: var(--primary-border);
+    background: var(--primary-soft);
+    color: var(--primary);
 }
 
-th:nth-child(9),
-td:nth-child(9) {
-    min-width: 60px;
+.btn-outline:hover {
+    border-color: var(--primary);
 }
 
-th:nth-child(10),
-td:nth-child(10) {
-    min-width: 60px;
+.btn-neutral {
+    border-color: var(--input);
+    background: var(--background);
+    color: var(--muted-foreground);
 }
 
-
-
-th {
-    background-color: #2c3e50; /* Darker muted blue for table headers */
-    color: #ffffff; /* White text for table headers */
+.btn-neutral:hover {
+    border-color: var(--faint-foreground);
+    color: var(--foreground);
 }
 
-.correct {
-    background-color: #1e8449; /* Darker muted green */
-    color: #ffffff; /* White text */
-}
-
-.higher {
-    background-color: #a0783a; /* Muted gold/brown */
-    color: #ffffff; /* White text */
-}
-
-.lower {
-    background-color: #5f9ea0; /* Muted cadet blue/teal */
-    color: #ffffff; /* White text */
-}
-
-.wrong {
-    background-color: #cb4335; /* Darker muted red */
-    color: #ffffff; /* White text */
-}
-
-.higher::after {
-    content: ' ▲';
-}
-
-.lower::after {
-    content: ' ▼';
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-.correct-animation {
-    animation: pulse 0.5s ease-in-out;
-    font-weight: bold;
-    color: #4CAF50; /* Green color for emphasis */
-}
+/* Settings bar */
 
 .settings-bar {
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #2c3e50;
-    padding: 1rem;
     z-index: 100;
-}
-
-.main-content {
-    margin-top: 80px; /* Adjust this value based on the height of your settings bar */
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1rem;
 }
 
 .settings-container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    gap: 0.5rem;
+    max-width: 1120px;
+    margin: 0 auto;
+}
+
+.settings-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 #season-checkboxes {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    margin-left: 1rem;
+    justify-content: center;
+    gap: 0.25rem;
 }
 
 #season-checkboxes input[type="checkbox"] {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    clip-path: inset(50%);
 }
 
+/* Seasons toggle between the neutral and outline button styles */
 #season-checkboxes label {
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    height: 1.75rem;
+    padding: 0 0.5rem;
+    border-radius: var(--radius-xs);
+    border: 1px solid var(--input);
+    background: var(--background);
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted-foreground);
     cursor: pointer;
-    transition: background-color 0.3s;
+    user-select: none;
+}
+
+#season-checkboxes label:hover {
+    border-color: var(--faint-foreground);
+    color: var(--foreground);
 }
 
 #season-checkboxes input[type="checkbox"]:checked + label {
-    background-color: #1a242f;
+    background: var(--primary-soft);
+    border-color: var(--primary-border);
+    color: var(--primary);
 }
 
-#season-checkboxes input[type="checkbox"]:not(:checked) + label {
-    background-color: rgba(44, 62, 80, 0.5);
+#season-checkboxes input[type="checkbox"]:checked + label:hover {
+    border-color: var(--primary);
+}
+
+#season-checkboxes input[type="checkbox"]:focus-visible + label {
+    outline: 1px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* Main */
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 2.5rem 1rem 3rem;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.logo {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: var(--radius-xs);
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1;
+    margin: 0;
+}
+
+.subtitle {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    margin: 0.5rem 0 1.5rem;
+}
+
+.panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xs);
+}
+
+.game-card {
+    width: 100%;
+    max-width: 560px;
+    padding: 1rem;
+}
+
+.game-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.game-meta > .label {
+    white-space: nowrap;
+}
+
+.season-value {
+    margin-left: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.season-status {
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+}
+
+.attempts-bar {
+    --used: 0;
+    position: relative;
+    height: 2px;
+    margin: 0.625rem 0 0.875rem;
+    background: var(--muted);
+    overflow: hidden;
+}
+
+.attempts-bar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--primary);
+    transform-origin: left;
+    transform: scaleX(var(--used));
+    transition: transform 200ms ease-out;
+}
+
+.input-container {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.input-wrap {
+    position: relative;
+    flex: 1;
+}
+
+/* Inputs: input.tsx */
+.input {
+    display: flex;
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 2rem 0 0.625rem;
+    font: inherit;
+    font-size: 0.875rem;
+    background: var(--background);
+    border: 1px solid var(--input);
+    color: var(--foreground);
+    border-radius: var(--radius-xs);
+}
+
+.input::placeholder {
+    color: var(--muted-foreground);
+}
+
+.input:hover {
+    border-color: var(--faint-foreground);
+}
+
+.input:disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.input:disabled + .kbd {
+    display: none;
+}
+
+/* Kbd: kbd.tsx */
+.kbd {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.25rem;
+    min-width: 1.25rem;
+    padding: 0 0.25rem;
+    border: 1px solid var(--input);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--muted-foreground);
+    pointer-events: none;
+}
+
+.input-wrap:focus-within .kbd {
+    display: none;
+}
+
+/* Autocomplete popup: search-select.tsx */
+.autocomplete-items {
+    position: absolute;
+    z-index: 99;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    max-height: 20rem;
+    overflow-y: auto;
+    padding: 0.25rem;
+    background: var(--popover);
+    border-radius: var(--radius-xs);
+    box-shadow: var(--elevation-popup);
+    animation: popup-in 80ms ease-out;
+}
+
+.autocomplete-items div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-shrink: 0;
+    padding: 0.375rem 0.5rem;
+    border-radius: var(--radius-xs);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    cursor: default;
+    user-select: none;
+}
+
+.autocomplete-items .option-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.autocomplete-items .option-label span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.autocomplete-items div small {
+    font-size: 0.75rem;
+    font-weight: 400;
+    text-transform: none;
+    white-space: nowrap;
+}
+
+.autocomplete-items div:hover,
+.autocomplete-items .autocomplete-active {
+    background: var(--muted);
+    color: var(--foreground);
+}
+
+.autocomplete-empty {
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+}
+
+/* Team badges: team-badge.tsx, with its grey circle fallback */
+.badge {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.badge-fallback {
+    display: inline-block;
+    border-radius: 50%;
+    background: var(--muted-foreground);
+    transform: scale(0.8);
+}
+
+/* Result message: toast.tsx status box */
+
+.result {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xs);
+    animation: slide-in 0.4s ease-out;
+}
+
+.result .icon {
+    margin-top: 1px;
+}
+
+.result div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.result strong {
+    font-weight: 500;
+}
+
+.result span {
+    color: var(--muted-foreground);
+}
+
+.result-success {
+    background: var(--success-soft);
+}
+
+.result-success .icon {
+    color: var(--success-text);
+}
+
+.result-error {
+    background: var(--destructive-soft);
+}
+
+.result-error .icon {
+    color: var(--destructive-text);
+}
+
+/* Guesses table */
+
+#feedback {
+    max-width: 100%;
+    margin-top: 1.5rem;
+    overflow-x: auto;
+    padding: 0 2px 0.5rem;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 2px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Header cells: table.tsx */
+th {
+    height: 2rem;
+    padding: 0 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    text-align: center;
+    white-space: nowrap;
+    user-select: none;
+}
+
+th:first-child {
+    text-align: left;
+}
+
+td {
+    height: 3rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-xs);
+    white-space: nowrap;
+}
+
+td.name-cell {
+    position: relative;
+    min-width: 12rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    font-weight: 700;
+}
+
+td.name-cell .badge {
+    margin-right: 0.5rem;
+    vertical-align: -3px;
+}
+
+/* Reticle corners mark the answer, like the planner's reticle tabs */
+.reticle {
+    position: absolute;
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 0 solid var(--primary);
+    pointer-events: none;
+}
+
+.reticle:nth-of-type(1) { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
+.reticle:nth-of-type(2) { top: -1px; right: -1px; border-top-width: 2px; border-right-width: 2px; }
+.reticle:nth-of-type(3) { bottom: -1px; left: -1px; border-bottom-width: 2px; border-left-width: 2px; }
+.reticle:nth-of-type(4) { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
+
+.tile {
+    min-width: 4rem;
+    text-align: center;
+    font-weight: 700;
+    animation: slide-in 0.4s ease-out backwards;
+}
+
+.tile .value {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.tile small {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--muted-foreground);
+}
+
+.tile.correct {
+    background: var(--success);
+    color: var(--success-foreground);
+}
+
+.tile.correct small {
+    color: var(--success-foreground);
+}
+
+.tile.higher,
+.tile.lower {
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+}
+
+.tile.wrong {
+    background: var(--background);
+    box-shadow: inset 0 0 0 1px var(--input);
+    color: var(--muted-foreground);
+}
+
+.icon.arrow {
+    color: var(--primary);
+    stroke-width: 3;
+}
+
+/* Legend */
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.25rem;
+    margin-top: 1.25rem;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+}
+
+.legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.legend .legend-note {
+    flex-basis: 100%;
+    justify-content: center;
+    text-align: center;
+}
+
+.legend .swatch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    min-width: 0;
+    border-radius: var(--radius-xs);
+    animation: none;
+}
+
+.legend .swatch .icon {
+    width: 0.75rem;
+    height: 0.75rem;
+}
+
+/* Toast: toast.tsx */
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    width: calc(100% - 2rem);
+    max-width: 24rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xs);
+    box-shadow: var(--elevation-tooltip);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--foreground);
+    background: color-mix(in srgb, var(--foreground) 6%, var(--background));
+    translate: -50% 0.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease-out, translate 300ms ease-out;
+    z-index: 200;
+}
+
+.toast .icon {
+    margin-top: 2px;
+    color: var(--muted-foreground);
+}
+
+.toast-error {
+    background: var(--destructive-soft);
+}
+
+.toast-error .icon {
+    color: var(--destructive-text);
+}
+
+.toast.show {
+    opacity: 1;
+    translate: -50% 0;
+}
+
+@keyframes slide-in {
+    0% {
+        transform: translateY(6px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes popup-in {
+    0% {
+        opacity: 0;
+        scale: 0.97;
+        translate: 0 -1px;
+    }
+}
+
+@media (max-width: 560px) {
+    /* Seasons scroll sideways on one row, with the label and actions above them */
+    .settings-bar {
+        position: static;
+        padding: 0.625rem 0 0.75rem;
+    }
+
+    .settings-container {
+        justify-content: space-between;
+    }
+
+    .seasons-label {
+        padding-left: 1rem;
+    }
+
+    .settings-actions {
+        padding-right: 1rem;
+    }
+
+    #season-checkboxes {
+        order: 1;
+        flex: 0 0 100%;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding: 0 1rem;
+        scrollbar-width: none;
+    }
+
+    #season-checkboxes label {
+        flex-shrink: 0;
+    }
+
+    .main-content {
+        padding-top: 1.75rem;
+    }
+
+    .season-status {
+        display: block;
+        margin-left: 0;
+    }
+
+    .input-container {
+        flex-wrap: wrap;
+    }
+
+    .input-wrap {
+        flex-basis: 100%;
+    }
+
+    .input-container .btn {
+        flex: 1;
+    }
+
+    td {
+        height: 2.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .tile {
+        min-width: 3.5rem;
+    }
+
+    td.name-cell {
+        min-width: 9rem;
+        max-width: 9rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        position: sticky;
+        left: 0;
+        z-index: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tile,
+    .result,
+    .autocomplete-items {
+        animation: none;
+    }
 }
