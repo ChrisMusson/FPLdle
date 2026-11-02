@@ -134,8 +134,10 @@ function getSelectedSeasons() {
 
 function saveSelectedSeasons() {
     const selectedSeasons = getSelectedSeasons();
-    setCookie("selectedSeasons", JSON.stringify(selectedSeasons), 365);
     const allBoxes = document.querySelectorAll('#season-checkboxes input');
+    // Store the excluded seasons, so seasons added to the data later are included by default
+    const excludedSeasons = Array.from(allBoxes).filter(cb => !cb.checked).map(cb => cb.value);
+    setCookie("excludedSeasons", JSON.stringify(excludedSeasons), 365);
     document.getElementById('toggleAllBtn').textContent = selectedSeasons.length === allBoxes.length ? 'None' : 'All';
 }
 
@@ -144,8 +146,9 @@ function populateSeasonCheckboxes() {
     const seasons = [...new Set(players.map(p => p.season))];
     seasons.sort().reverse();
     seasonCheckboxes.innerHTML = '';
-    const savedSeasons = getCookie("selectedSeasons");
-    const selectedSeasons = savedSeasons ? JSON.parse(savedSeasons) : seasons;
+    const savedExcluded = getCookie("excludedSeasons");
+    const excludedSeasons = savedExcluded ? JSON.parse(savedExcluded) : [];
+    setCookie("selectedSeasons", "", -1); // Old format, which left new seasons unselected
 
     seasons.forEach(season => {
         const checkbox = document.createElement('input');
@@ -153,7 +156,7 @@ function populateSeasonCheckboxes() {
         checkbox.id = season;
         checkbox.name = season;
         checkbox.value = season;
-        checkbox.checked = selectedSeasons.includes(season);
+        checkbox.checked = !excludedSeasons.includes(season);
 
         const label = document.createElement('label');
         label.htmlFor = season;
